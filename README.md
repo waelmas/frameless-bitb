@@ -591,6 +591,8 @@ My talk at BSides 2023:
 How to protect Evilginx using Cloudflare and HTML Obfuscation:
 [https://www.jackphilipbutton.com/post/how-to-protect-evilginx-using-cloudflare-and-html-obfuscation](https://www.jackphilipbutton.com/post/how-to-protect-evilginx-using-cloudflare-and-html-obfuscation)
 
+Evilginx resources for Microsoft 365 by @BakkerJan:
+[https://janbakker.tech/evilginx-resources-for-microsoft-365/](https://janbakker.tech/evilginx-resources-for-microsoft-365/)
 
 
 # TODO
