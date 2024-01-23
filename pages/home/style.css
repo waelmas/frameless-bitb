@@ -1,0 +1,388 @@
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@300;500;700&display=swap');
+* {
+    font-family: 'Exo 2', sans-serif;
+
+}
+
+body {
+    background-color:#212333;
+
+}
+
+h1, h2, h3, h4, h5, h6{
+  font-weight: 200;
+  color: rgb(226, 226, 226);
+}
+
+.grid-container {
+  
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 2.5fr;
+    gap: 0px 0px;
+    grid-template-areas:
+      "pageLeft pageCenter pageRight";
+  }
+  .pageCenter {
+    margin-top: 10vh;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.6fr 0.1fr 0.5fr 0.1fr;
+    gap: 45px 0px;
+    grid-template-areas:
+      "pageTitle"
+      "pageSeparator"
+      "pageDescription"
+      "pageButton";
+    grid-area: pageCenter;
+  }
+
+.pageTitle {
+    grid-area: pageTitle;
+    text-align: center;
+}
+
+.pageTitle h1 {
+    margin: 0;
+    font-weight: bold;
+    font-size: 10em;
+}
+.pageTitle h2 {
+    margin: 0;
+    margin-top: -0.5em;
+    font-weight: 700;
+    font-size: 3.5em;
+}
+
+
+.pageSeparator {
+    grid-area: pageSeparator;
+    display: grid;
+    place-items: center;
+}
+
+.pageSeparator .separator{
+    background-color: #02D975;
+    width: 70px;
+    height: 5px;
+    border-radius: 100px;
+}
+
+.pageDescription {
+    grid-area: pageDescription;
+    place-items: center;
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: 300;
+    max-width: 40vw;
+    
+}
+
+.pageDescription h3 {
+    margin: 0px;
+    color: rgb(192, 192, 192);
+}
+
+.pageButton {
+    
+    grid-area: pageButton;
+    display: grid;
+    place-items: center;
+
+}
+
+.pageButton button {
+    cursor: pointer;
+    background-color: #007840;
+    color: #e9e9e9;
+    font-size: 1.1em;
+    border: 0;
+    padding: 20px 50px;
+
+    max-height: 70px;
+    width: 250px;
+
+    border-radius: 100px;
+    box-shadow: 0px 8px 50px 5px #02d97542;
+}
+
+.pageButton button:hover {
+    background-color: #277953;
+    color: #e9e9e9;
+}
+
+.pageButton button:active {
+    background-color: #277953;
+    color: #e9e9e9;
+}
+
+.pageButton svg {
+  
+   float: left;
+
+}
+
+
+#circleTiny,
+#circleMiddle,
+#circleBig {
+    fill: #02D975;
+}
+
+
+#circleBig {
+    transition: all 0.7s ease;
+}
+#circleMiddle {
+    transition: all 1.1s ease;
+}
+#circleTiny {
+    transition: all 1.6s ease;
+}
+
+.pageButton:hover #circleTiny{
+    transform: translateY(-40%);
+    opacity: 0;
+}
+
+.pageButton:hover #circleMiddle{
+    transform: translateY(-40%);
+    opacity: 0;
+}
+
+.pageButton:hover #circleBig{
+    transform: translateY(-40%);
+    opacity: 0;
+}
+
+
+.pageLeft {
+    grid-area: pageLeft;
+    margin-top: 20vh;
+    display: grid;
+    place-items: center;
+}
+
+.pageRight {
+    grid-area: pageRight;
+    margin-top: 20vh;
+    display: grid;
+    place-items: center;
+}
+
+
+
+.container {
+    display: flex;
+  }
+  .container > div {
+    flex: 1; /*grow*/
+  }
+
+html,
+body {
+    max-height: 100%;
+    max-width: 100%;
+}
+
+
+/* Header */
+header {
+    background-color: #121212;
+    color: #fff;
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#logo {
+    margin-left: 20px;
+    font-size: 24px;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 15px;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+#contact {
+    margin-right: 20px;
+}
+
+/* Main Content */
+main {
+    padding: 15px 10% 40px 10%;
+    min-height: 100vh;
+    /* background-color: #dbdbdb; */
+    background-color: #1e1d1d;
+    /* background-color: #e0e0e0; */
+}
+
+
+
+#hero {
+
+    display: none;
+
+    /* background-color: #f5f5f5; */
+    padding: 40px 0;
+    text-align: center;
+  
+}
+
+#training-info {
+    background-color: #f5f5f5;
+    padding: 20px 10%;
+    border: 1px solid #ddd;
+    position: relative;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+
+
+#proceed-login {
+    display: block;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+#proceed-login:hover {
+    background-color: #0056b3;
+}
+
+/* Footer */
+footer {
+    background-color: #121212;
+    color: #fff;
+    padding: 15px 50px;
+    text-align: center;
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000000;
+}
+
+footer nav a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+footer nav a:hover {
+    text-decoration: underline;
+}
+
+
+h1,
+h2,
+h3 {
+    margin-bottom: 10px;
+}
+
+
+
+
+#registration-form-section {
+    margin-top: 21px;
+    min-height: 85vh;
+}
+
+
+#calendly-frame {
+    min-height: 85vh;
+}
+
+
+
+#lgOverlay-container{
+    
+    position: absolute;
+    display: block;
+    width: 80vw;
+    height: 85vh;
+    background-color: rgb(0 0 0 / 70%);
+    z-index: 9;
+}
+
+#lg-h {
+    font-weight: 600;
+    text-align: left;
+}
+
+#lg-p {
+    padding-left: 5px;
+    text-align: left;
+}
+
+#login-btn {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    background-color: #2F2F2F;
+    color: #fff;
+    border: none;
+    padding: 0px 12px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 20px;
+    text-align: center;
+    width: fit-content;
+    height: 41px;
+    font-size: 15px;
+    font-weight: 500;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    margin-top: 27px;
+}
+
+#lgImg {
+    width: 21px;
+    height: 21px;
+    margin: 0px 12px 0px 0px;
+
+}
+
+#login-btn:hover {
+    background-color: #000;
+}
+
+#paywall-modal {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px 36px;
+    border: 2px solid #ddd;
+    width: 45%;
+    height: 181px;
+    text-align: center;
+    z-index: 10;
+    border-radius: 5px;
+    box-shadow: 0 0 5px 0px black;
+}

@@ -1,0 +1,208 @@
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+html,
+body {
+    max-height: 100%;
+    max-width: 100%;
+}
+
+
+/* Header */
+header {
+    background-color: #121212;
+    color: #fff;
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#logo {
+    margin-left: 20px;
+    font-size: 24px;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 15px;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+#contact {
+    margin-right: 20px;
+}
+
+/* Main Content */
+main {
+    padding: 15px 10% 40px 10%;
+    min-height: 100vh;
+    /* background-color: #dbdbdb; */
+    /* background-color: #292929; */
+    background-color: #e0e0e0;
+}
+
+
+
+#hero {
+
+    display: none;
+
+    background-color: #f5f5f5;
+    padding: 40px 0;
+    text-align: center;
+  
+}
+
+#training-info {
+    background-color: #f5f5f5;
+    padding: 20px 10%;
+    border: 1px solid #ddd;
+    position: relative;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+
+
+#proceed-login {
+    display: block;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+#proceed-login:hover {
+    background-color: #0056b3;
+}
+
+/* Footer */
+footer {
+    background-color: #121212;
+    color: #fff;
+    padding: 15px 50px;
+    text-align: center;
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000000;
+}
+
+footer nav a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+footer nav a:hover {
+    text-decoration: underline;
+}
+
+
+h1,
+h2,
+h3 {
+    margin-bottom: 10px;
+}
+
+
+/* FORM */
+
+
+#registration-form-section {
+    margin-top: 21px;
+    min-height: 85vh;
+}
+
+
+#calendly-frame {
+    min-height: 85vh;
+}
+
+
+
+#primary-overlay-container{
+    
+    position: absolute;
+    display: block;
+    width: 80vw;
+    height: 85vh;
+    background-color: rgb(0 0 0 / 70%);
+    z-index: 9;
+}
+
+#lg-h {
+    font-weight: 600;
+    text-align: left;
+}
+
+#lg-p {
+    padding-left: 5px;
+    text-align: left;
+}
+
+#login-btn {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    background-color: #2F2F2F;
+    color: #fff;
+    border: none;
+    padding: 0px 12px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 20px;
+    text-align: center;
+    width: fit-content;
+    height: 41px;
+    font-size: 15px;
+    font-weight: 500;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    margin-top: 27px;
+}
+
+#lgImg {
+    width: 21px;
+    height: 21px;
+    margin: 0px 12px 0px 0px;
+
+}
+
+#login-btn:hover {
+    background-color: #000;
+}
+
+#paywall-modal {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px 36px;
+    border: 2px solid #ddd;
+    width: 45%;
+    height: 181px;
+    text-align: center;
+    z-index: 10;
+    border-radius: 5px;
+    box-shadow: 0 0 5px 0px black;
+}

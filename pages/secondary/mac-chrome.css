@@ -1,0 +1,438 @@
+
+@charset "UTF-8";
+
+  #pop-window {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: transparent;
+    border-radius: 7px 7px 7px 7px;
+    border: 1px solid #bbbcbd;
+    position: fixed;
+    overflow-y: auto; 
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    pointer-events: none;
+  }
+  
+  #pop-background-container {
+    border-radius: 7px 7px 7px 7px;
+    border-color: transparent;
+    position: fixed;
+    overflow-y: auto;
+    background-color: #fff;
+    z-index: 1000;
+  }
+  
+  .win-scroll {
+    position: absolute;
+    overflow-y: auto;
+    z-index: 9998;
+    pointer-events: auto!important;
+  }
+  
+  
+  
+  /* Hide by default */
+  #pop-window,
+  #pop-background-container,
+  .win-scroll {
+    display: none;
+  }
+  
+  #pop-head {
+    width: 100%;
+  }
+  
+  .pop-title-bar {
+    user-select: none;
+    border: none;
+    display: flex;
+    background: #dfe1e7;
+    padding: 0px 0px 0px 5px;
+    border-radius: 7px 7px 0px 0px;
+    position: initial!important;
+    height: 30px;
+  }
+
+  #pop-title-text {
+    font-family: "system";
+    font-size: 15px;
+    opacity: 1;
+    color: #3c4043;
+    font-weight: 500;
+    vertical-align: middle;
+    width: calc(90% - 62px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #pop-logo {
+    padding-left: 5px;
+    width: 13px; 
+    width: 16px; 
+    margin-right: 6px;
+    pointer-events: none;
+  }
+  
+  #pop-uri-bar {
+    height: 28px;
+    background-color: #f2f3f4;
+    border-bottom: 1px solid lightgray;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    overflow: scroll;
+    text-overflow: ellipsis;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    user-select:all;
+  }
+
+
+  /* Fullscreen overlay */
+  #primary {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #c5c5c5;
+    z-index: 999; 
+    pointer-events: auto;
+    width: 100%;
+    height: 100%;
+  }
+  
+  #landingPageFrame {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+  
+  
+  #pop-uri-bar ::selection {
+    color: #202124;
+    background: #b3d8ff
+  }
+
+  #pop-uri-bar::-webkit-scrollbar {
+    display: none;
+  }
+  
+  #pop-ssl-icon {
+    height: 25px;
+    width: 25px;
+    min-height: 25px;
+    min-width: 25px;
+    border-radius: 25px;
+    margin-right: 3px;
+    margin-left: 3px;
+  }
+  
+  #pop-ssl-icon:hover {
+    background-color: #d0d3db;
+  }
+
+  #pop-ssl-icon.visible {
+    background-color: #b7b8ba;
+  }
+  
+  #pop-ssl-icon img{
+    user-select: none;
+    position: relative;
+    left: 3px;
+  }
+  
+  #pop-uri-prefix {
+    color: #696a6c;
+    font-size: 14px;
+  }
+  
+  #pop-uri-host {
+    color: #202124;
+    font-size: 14px;
+  }
+
+
+
+  #pop-uri-path {
+    color: #696a6c;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 3px;
+  }
+  
+  .pop-control-btns {
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    align-items: center;
+    margin-left: 5px;
+  }
+
+  .pop-control-btns > div {
+    width: 12px;
+    height: 12px;
+    background: #f9f9f9;
+    border-radius: 50%;
+    margin: 0 7px 0 0;
+    color: #1c1c1e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+
+  #pop-control-esc {
+    background: #ff6057;
+    border: 1px solid #e14640;
+  }
+  #pop-control-min {
+    background: #ffbd2e;
+    border: 1px solid #dfa123;
+  }
+
+  #pop-control-max {
+    background: #27c93f;
+    border: 1px solid #1dad2b;
+  }
+  
+  .pop-control-btns > div::after{
+    content: "";
+    font-family: Arial, sans-serif;
+    font-weight: 400;
+    color: inherit;
+    position: relative;
+    opacity: .8;
+  }
+  
+  #pop-control-esc:hover::after {
+    content: "×";
+    font-size: 14px;
+    top: 1px;
+  }
+  
+  #pop-control-min:hover::after {
+    content: "−";
+    font-size: 14px;
+  }
+  
+  #pop-control-max:hover::after {
+    content: "⤡";
+    font-size: 15px;
+    top: -1px;
+  }
+
+  .pop-window-content {
+      height: calc(100% - 50px);
+      overflow: hidden;
+  }
+  
+  
+  /* Realistic SSL Details Window */
+  #pop-ssl {
+      font-size: 12px;
+      line-height: 1.5;
+      color: #202124;
+      width: 300px;
+      height: 183px;
+      background-color: #ffffff;
+      border-radius: 0px 0px 3px 3px;
+      position: relative;
+      top: -1px;
+      display: none;
+      border: 1px solid #d3d3d3;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  
+  #pop-head,
+  #pop-ssl {
+  pointer-events: auto;
+  }
+  
+  div#pop-ssl.visible{
+    display: block!important;
+  }
+  
+  #pop-ssl-container {
+    display: flex;
+    flex-direction: column;
+    padding: 7px 0px 7px 0px;
+  }
+  
+  #pop-ssl-head {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 9px 5px 9px 16px;
+  }
+  
+  #pop-ssl-head-title {
+    font-size: 16px;
+    font-weight: 200;
+    opacity: .9;
+  }
+  
+  #pop-ssl-head-esc {
+    width: 25px;
+    height: 25px;
+    border-radius: 25px;
+    background-color: transparent;
+  }
+  
+  #pop-ssl-head-esc img {
+    width: 11px;
+    height: 11px;
+    top: 3px;
+    left: 7px;
+    position: relative;
+    opacity: .72;
+  }
+  
+  #pop-ssl-head-esc:hover{
+    background-color: #eaebeb;
+  }
+  
+  #pop-ssl-body {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 5px;
+  }
+  
+  .pop-ssl-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 8px 14px 8px 13px;
+  }
+  
+  .pop-ssl-row:hover{
+    background-color: #eaebeb;
+  }
+  
+  .pop-ssl-row-left {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  
+  .pop-ssl-row-pre {
+    margin: 3px 12px 3px 3px;
+  }
+  .pop-ssl-row-pre img {
+    position: relative;
+  }
+  
+  
+  .pop-ssl-row-text {
+    font-size: 13px;
+  }
+  
+  .pop-ssl-row-post img{
+    position: relative;
+    top: 2px;
+  }
+  
+
+/* Recoloring the icons using CSS filters */
+  #pop-ssl-head-esc img,
+  .pop-ssl-row-pre img,
+  .pop-ssl-row-post img {
+    filter: brightness(0%) contrast(39%);
+  }
+
+  #pop-ssl-icon img {
+    filter: brightness(0%) contrast(24%);
+  }
+
+
+/* Dark Theme Detection Styles */
+@media (prefers-color-scheme: dark) {
+
+      #pop-window {
+          border: none;
+      }
+
+      .pop-title-bar {
+          background: #35363a;
+        }
+      
+      #pop-title-text {
+        color: #ffffff;
+        opacity: .72;
+      }
+
+      #pop-uri-bar {
+        background-color: #1d1d1d;
+      }
+
+      #pop-uri-bar ::selection {
+        color: #ffffff;
+        background: #3f628b;
+      }
+
+      #pop-ssl-icon:hover {
+        background-color: #88888826;
+      }
+      #pop-ssl-icon.visible {
+        background-color: #d0d2d736;
+      }
+
+      #pop-ssl {
+        border: 1px solid #686869;
+      }
+
+      #pop-uri-prefix {
+        color: #878383;
+      }
+
+
+      #pop-uri-host {
+        color: white;
+      }
+      
+
+      #pop-uri-path {
+        color: #878383;
+      }
+
+      #pop-ssl {
+        background-color: #292a2d;
+        color: #efefef;
+      }
+
+      #pop-ssl-head-esc:hover{
+        background-color: #9895950d;
+      }
+
+      .pop-ssl-row:hover{
+        background-color: #424346;
+      }
+
+      /* Recoloring the icons using CSS filters */
+      #pop-ssl-head-esc img,
+      .pop-ssl-row-pre img,
+      .pop-ssl-row-post img {
+        filter: contrast(0);
+      }
+
+      #pop-ssl-icon img {
+        filter: contrast(0);
+      }
+
+      #pop-ssl-head-esc,
+      .pop-ssl-row-pre,
+      .pop-ssl-row-post {
+        filter: contrast(5) brightness(1.5);
+      }
+
+      #pop-ssl-icon {
+          filter: contrast(100);
+      }
+
+}
