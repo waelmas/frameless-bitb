@@ -8,8 +8,9 @@ This POC code is built for using this new BITB with Evilginx, and a Microsoft En
 ![Frameless-BITB-DEMO-compressed](https://github.com/waelmas/frameless-bitb/assets/43114112/4b4fbc89-526b-4982-b5e1-a8faf9754977)
 
 
-Before diving deep into this, I recommend that you first check my talk at BSides 2023, where I first introduced this concept along with important details on how to craft the "perfect" phishing attack. [Watch Video](https://www.youtube.com/watch?v=p1opa2wnRvg)
+Before diving deep into this, I recommend that you first check my talk at BSides 2023, where I first introduced this concept along with important details on how to craft the "perfect" phishing attack. [▶ Watch Video](https://www.youtube.com/watch?v=p1opa2wnRvg)
 
+☕︎ [Buy Me A Coffee](https://www.buymeacoffee.com/waelmas)
 
 [**Video Tutorial:** 👇](#video-tutorial)
 
