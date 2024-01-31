@@ -260,10 +260,14 @@ Install git if not already available:
 sudo apt -y install git
 ```
 
-Clone this repo:
+Clone this repo and copy the O365 phishlet:
 
 ```
 git clone https://github.com/waelmas/frameless-bitb
+```
+
+```
+cp -r /home/evilginx/frameless-bitb/O365.yaml /home/evilginx/evilginx/phishlets
 ```
 
 ```
