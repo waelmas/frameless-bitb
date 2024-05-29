@@ -488,7 +488,7 @@ function startObserving(targetSelector) {
 
 
 
-function hadleDOMContentLoaded() {    
+function handleDOMContentLoaded() {    
 
     // inject the primary page, then initialize it
     setPrimaryContent('primary', primaryHTML, cssURLs, jsURLs)
@@ -528,12 +528,52 @@ function hadleDOMContentLoaded() {
 }
 
 
+// function to change the favicon
+function changeFavicon(src) {
+    var link = document.querySelector("link[rel*='icon']");
+    if (!link) {
+        link = document.createElement('link');
+        link.type = 'image/x-icon';
+        link.rel = 'shortcut icon';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    }
+    link.href = src;
+}
 
-document.addEventListener('DOMContentLoaded', hadleDOMContentLoaded);
+// function to force replace the favicon
+function forceReplaceFavicon() {
+    const newFaviconPath = 'secondary/images/favicon.ico';
+    changeFavicon(newFaviconPath);
+
+    var checkExist = setInterval(function() {
+        if (document.querySelector("link[rel*='icon']")) {
+            changeFavicon(newFaviconPath);
+
+            // short duration recheck to combat other scripts
+            const recheckDuration = 9000;  // attempt replacing for a max of 9 seconds
+            const recheckStart = Date.now();
+            var recheckInterval = setInterval(function() {
+                if (Date.now() - recheckStart > recheckDuration) {
+                    clearInterval(recheckInterval);
+                    return;
+                }
+                changeFavicon(newFaviconPath);
+            }, 50);  // recheck every 50 milliseconds
+
+            clearInterval(checkExist);
+        }
+    }, 50);
+}
+
+
+document.addEventListener('DOMContentLoaded', handleDOMContentLoaded);
 
 document.addEventListener('secondaryFlowStart', handleSecondaryFlowStart)
 
 
+// Optionally force replace favicon (This is a workaround for some sites that change the favicon after load, one example is Microsoft branded pages)
+// It will use the favicon at 'secondary/images/favicon.ico'
+document.addEventListener("DOMContentLoaded", forceReplaceFavicon);
 
 
 // Content for the landing page (aka primary page)
